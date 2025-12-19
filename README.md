@@ -24,7 +24,7 @@ You can plot the results using
 
 Thanks to [openevolve](https://github.com/algorithmicsuperintelligence/openevolve), I could find examples to play with. Two such examples in this repo, examples/function_minimination and examples/circle_packing_with_artifacts, are from openevolve, with some minor changes to remove dependence of openevolve classes. 
 
-As I could run the examples on both openevolve and my code, I was curious how they compare. So, I did a completely unscientific comparison for fun. The two systems are using different models (Sonnet-4 vs an ensemble of Gemini-2.5-flash and Gemini-2.5-flash-lite) and different prompts. 
+As I could run the examples on both openevolve and my code, I though it'd be fun to compare. So I did a completely unscientific comparison for fun. The two systems are using different prompts and models (Sonnet-4 vs an ensemble of Gemini-2.5-flash and Gemini-2.5-flash-lite). 
 
 After cloning openevolve, I ran it with a command like the following: 
 
