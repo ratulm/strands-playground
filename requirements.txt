@@ -1,6 +1,6 @@
 # Core dependencies
-strands
-openai
+strands-agents[gemini]
+strands-agents-tools
 
 # Scientific computing
 numpy
