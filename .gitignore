@@ -1,0 +1,9 @@
+# python
+.python-version
+__pycache__/
+
+# code output logs
+evolution_output_*/
+
+# Mac
+.DS_Store

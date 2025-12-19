@@ -1,0 +1,9 @@
+# Core dependencies
+strands
+openai
+
+# Scientific computing
+numpy
+
+# Plotting and visualization
+matplotlib
