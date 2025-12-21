@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
 Plot metrics from optimization output programs.
-Usage: 
+Usage:
   python plot_optimization_metrics.py [path_to_programs_folder] [--metric1 METRIC] [--metric2 METRIC] [--openevolve PATH]
-  
+
 Examples:
   python plot_optimization_metrics.py programs/
   python plot_optimization_metrics.py programs/ --metric1 combined_score
   python plot_optimization_metrics.py programs/ --metric1 combined_score --metric2 eval_time
-  python plot_optimization_metrics.py programs/ --openevolve /Users/mratul/git/openevolve/examples/function_minimization/openevolve_output/checkpoints/checkpoint_25/programs
+  python plot_optimization_metrics.py programs/ --openevolve examples/function_minimization/openevolve_output/checkpoints/checkpoint_25/programs
 """
 
 import argparse
@@ -317,9 +317,7 @@ Examples:
   python plot_optimization_metrics.py programs/ --openevolve /path/to/openevolve/checkpoints/checkpoint_25/programs
         """
     )
-    parser.add_argument('programs_dir', nargs='?', 
-                        default='local-playground/optimization_output_20251218_003219/programs',
-                        help='Path to programs directory')
+    parser.add_argument("programs_dir", help="Path to programs directory")
     parser.add_argument('--metric1', default='combined_score',
                         help='Primary metric to plot (default: combined_score)')
     parser.add_argument('--metric2', default=None,
@@ -330,14 +328,14 @@ Examples:
                         help='Path to OpenEvolve programs directory to include in analysis')
     parser.add_argument('--output', default=None,
                         help='Output file path for the plot (default: programs_dir/../metrics_plot.png)')
-    
+
     args = parser.parse_args()
-    
+
     print(f"Analyzing metrics from: {args.programs_dir}")
-    
+
     # Collect metrics from main directory
     versions, all_metrics = collect_metrics(args.programs_dir)
-    
+
     # Collect metrics from OpenEvolve directory if provided
     oe_versions = None
     oe_metrics = None
@@ -346,14 +344,14 @@ Examples:
         oe_versions, oe_metrics = collect_metrics(args.openevolve)
         if oe_versions:
             print(f"Loaded {len(oe_versions)} versions from OpenEvolve")
-    
+
     if not versions:
         print("No evaluation files found!")
         return
-    
+
     # Use metric2 only if explicitly provided
     metric2 = args.metric2
-    
+
     # Plot metrics
     plot_metrics(versions, all_metrics, args.programs_dir, args.metric1, metric2,
                 args.metric2_higher_is_better, oe_versions, oe_metrics, args.output)
