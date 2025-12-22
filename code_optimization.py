@@ -57,6 +57,10 @@ def configure_logging():
     # turn off low-level logging
     for noisy in ["boto", "boto3", "botocore", "urllib3"]:
         logging.getLogger(noisy).setLevel(logging.ERROR)
+    
+    # Suppress OpenTelemetry context errors (caused by async context propagation
+    # issues in Strands Swarm multi-agent pattern - these are cosmetic errors)
+    logging.getLogger("opentelemetry.context").setLevel(logging.CRITICAL)
 
 # Configure logging before creating logger
 configure_logging()
