@@ -17,6 +17,49 @@ from code_optimization.orchestrator import OptimizationOrchestrator
 from code_optimization.core.program_manager import ProgramManager
 
 
+# ANSI color codes
+class Colors:
+    """ANSI color codes for terminal output."""
+    RESET = "\033[0m"
+    GREEN = "\033[32m"
+    CYAN = "\033[36m"
+    BLUE = "\033[34m"
+    YELLOW = "\033[33m"
+    RED = "\033[31m"
+    BOLD_RED = "\033[1;31m"
+    MAGENTA = "\033[35m"
+
+
+class ColoredFormatter(logging.Formatter):
+    """Custom formatter with colored output.
+    
+    Format: [datetime] [module] [severity] message
+    - [datetime] [module]: green
+    - [severity]: color depends on level
+    """
+    
+    LEVEL_COLORS = {
+        logging.DEBUG: Colors.CYAN,
+        logging.INFO: Colors.BLUE,
+        logging.WARNING: Colors.YELLOW,
+        logging.ERROR: Colors.RED,
+        logging.CRITICAL: Colors.BOLD_RED,
+    }
+    
+    def format(self, record: logging.LogRecord) -> str:
+        # Get the severity color
+        level_color = self.LEVEL_COLORS.get(record.levelno, Colors.RESET)
+        
+        # Format datetime
+        datetime_str = self.formatTime(record, self.datefmt)
+        
+        # Build the colored log message
+        green_part = f"{Colors.GREEN}[{datetime_str}] [{record.name}]{Colors.RESET}"
+        severity_part = f"{level_color}[{record.levelname}]{Colors.RESET}"
+        
+        return f"{green_part} {severity_part} {record.getMessage()}"
+
+
 def configure_logging():
     """Configure logging based on environment variable.
     
@@ -41,18 +84,22 @@ def configure_logging():
     
     log_level = log_level_map.get(log_level_str, logging.INFO)
     
+    # Create colored formatter
+    formatter = ColoredFormatter(datefmt='%Y-%m-%d %H:%M:%S')
+    
+    # Create handler with colored formatter
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+    
     # Configure root logger
-    logging.basicConfig(
-        level=log_level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        force=True  # Override any existing configuration
-    )
+    root_logger = logging.getLogger()
+    root_logger.setLevel(log_level)
+    root_logger.handlers.clear()  # Remove any existing handlers
+    root_logger.addHandler(handler)
     
     # Log the configuration
     logger = logging.getLogger(__name__)
     logger.debug("Logging configured with level: %s", log_level_str)
-
 
     # turn off low-level logging
     for noisy in ["boto", "boto3", "botocore", "urllib3"]:
