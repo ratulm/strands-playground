@@ -236,7 +236,7 @@ def create_supervisor_agent(model_id: str = None, window_size: int = 50) -> Agen
             if model_type == "gemini":
                 model_id = "gemini-2.5-flash"
             else:
-                model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+                model_id = "global.anthropic.claude-sonnet-4-5-20250929-v1:0"
 
     # Create the appropriate model based on type
     if model_type == "gemini":
